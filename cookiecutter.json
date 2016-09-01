@@ -1,0 +1,15 @@
+{
+	"project_name": "guizion_cookiecutter",
+	"local_database_name": "database",
+	"local_database_user": "database_user",
+	"local_database_password": "database_password",
+
+	"production_database_name": "database",
+	"production_database_user": "database_user",
+	"production_database_password": "database_password",
+
+	"s3_bucket_name": "s3_bucket",
+
+
+	"celery_broker_url": "amqp://app:password@host:5672/app"
+}
