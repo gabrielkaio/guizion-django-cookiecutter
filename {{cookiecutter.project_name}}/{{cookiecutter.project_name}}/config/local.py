@@ -9,7 +9,7 @@ DEBUG = True
 DATABASES = {
     'default': {
         'ENGINE': 'django.db.backends.postgresql',
-        'NAME': '{{cookiecutter.cookiecutter.local_database_name}}',
+        'NAME': '{{cookiecutter.local_database_name}}',
         'USER': '{{cookiecutter.local_database_user}}',
         'PASSWORD': '{{cookiecutter.local_database_password}}',
         'HOST': 'localhost',

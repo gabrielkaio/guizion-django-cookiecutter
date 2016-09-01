@@ -6,9 +6,9 @@ DEBUG = False
 DATABASES = {
     'default': {
         'ENGINE': 'django.db.backends.postgresql',
-        'NAME': '{{production_database_name}}',
-        'USER': '{{production_database_user}}',
-        'PASSWORD': '{{production_database_password}}',
+        'NAME': '{{cookiecutter.production_database_name}}',
+        'USER': '{{cookiecutter.production_database_user}}',
+        'PASSWORD': '{{cookiecutter.production_database_password}}',
         'HOST': 'localhost',
         'PORT': '5432',
     }
