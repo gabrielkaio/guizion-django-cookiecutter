@@ -10,7 +10,7 @@ from model_utils.fields import StatusField
 
 from oauth2_provider.models import AccessToken, RefreshToken
 
-from {{app_name}}.apps.accounts.managers import UserManager
+from {{cookiecutter.app_name}}.apps.accounts.managers import UserManager
 
 
 class User(AbstractBaseUser, PermissionsMixin, models.Model):

@@ -3,7 +3,7 @@ import uuid
 import boto3
 from django.conf import settings
 
-from {{project_name}}.apps.upload.types import PhotoDirectoryFactory
+from {{cookiecutter.project_name}}.apps.upload.types import PhotoDirectoryFactory
 
 
 class PhotoUpload:

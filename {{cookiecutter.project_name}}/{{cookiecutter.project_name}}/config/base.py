@@ -61,7 +61,7 @@ MIDDLEWARE_CLASSES = [
 
 AUTH_USER_MODEL = 'accounts.User'
 
-ROOT_URLCONF = '{{project_name}}.urls'
+ROOT_URLCONF = '{{cookiecutter.project_name}}.urls'
 
 TEMPLATES = [
     {
@@ -80,7 +80,7 @@ TEMPLATES = [
     },
 ]
 
-WSGI_APPLICATION = '{{{{project_name}}}}.wsgi.application'
+WSGI_APPLICATION = '{{cookiecutter.project_name}}.wsgi.application'
 
 # Password validation
 # https://docs.djangoproject.com/en/1.9/ref/settings/#auth-password-validators
@@ -120,7 +120,7 @@ DEVICE_AGENT_HEADER = "HTTP_DEVICE_AGENT"
 DEVICE_LANGUAGE_HEADER = "HTTP_DEVICE_LANGUAGE"
 
 # Celery Conf
-BROKER_URL = '{{celery_broker_url}}'
+BROKER_URL = '{{cookiecutter.celery_broker_url}}'
 
 CELERY_TASK_SERIALIZER = 'json'
 CELERY_RESULT_SERIALIZER = 'json'
@@ -137,8 +137,8 @@ OAUTH2_PROVIDER = {
     # this is the list of available scopes
     'SCOPES': {'read': 'Read scope', 'write': 'Write scope', 'groups': 'Access to your groups'},
     'ACCESS_TOKEN_EXPIRE_SECONDS': 16070400,  # 180 dias, aproximadamente 6 meses
-    'OAUTH2_VALIDATOR_CLASS': "{{app_name}}.apps.utils.oauth_extension.OAuthLibExtension",
-    'OAUTH2_BACKEND_CLASS': "{{app_name}}.apps.utils.oauth_extension.OAuthLibCoreExtension",
+    'OAUTH2_VALIDATOR_CLASS': "{{cookiecutter.app_name}}.apps.utils.oauth_extension.OAuthLibExtension",
+    'OAUTH2_BACKEND_CLASS': "{{cookiecutter.app_name}}.apps.utils.oauth_extension.OAuthLibCoreExtension",
 }
 
 
@@ -168,4 +168,4 @@ REST_FRAMEWORK = {
 }
 
 
-AWS_STORAGE_BUCKET_NAME = '{{s3_bucket_name}}'
+AWS_STORAGE_BUCKET_NAME = '{{cookiecutter.s3_bucket_name}}'

@@ -18,8 +18,8 @@ from django.contrib import admin
 from django.contrib.auth.views import \
     password_reset_done, password_reset_confirm, password_reset_complete, password_reset
 
-from {{app_name}}.apps.upload.api import PhotoUploadAPI
-from {{app_name}}.config.routes import router
+from {{cookiecutter.app_name}}.apps.upload.api import PhotoUploadAPI
+from {{cookiecutter.app_name}}.config.routes import router
 
 
 apipatterns = [
