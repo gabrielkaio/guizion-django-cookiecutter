@@ -2,10 +2,10 @@ from rest_framework.decorators import list_route
 from rest_framework.response import Response
 from rest_framework import viewsets
 
-from {{cookiecutter.app_name}}.apps.accounts.models import User
-from {{cookiecutter.app_name}}.apps.accounts.serializer import UserSerializer, ChangePasswordSerializer
-from {{cookiecutter.app_name}}.apps.utils.error_factory import ErrorFactory, ErrorType
-from {{cookiecutter.app_name}}.permissions import IsCreationOrIsAuthenticated, NoPermissionNeeded
+from {{cookiecutter.project_name}}.apps.accounts.models import User
+from {{cookiecutter.project_name}}.apps.accounts.serializer import UserSerializer, ChangePasswordSerializer
+from {{cookiecutter.project_name}}.apps.utils.error_factory import ErrorFactory, ErrorType
+from {{cookiecutter.project_name}}.permissions import IsCreationOrIsAuthenticated, NoPermissionNeeded
 
 
 class UserViewSet(viewsets.ModelViewSet):
@@ -39,7 +39,7 @@ class UserViewSet(viewsets.ModelViewSet):
         try:
             email = request.data['email']
             User.objects.get(email=email)
-            from {{cookiecutter.app_name}}.apps.utils.recovery_password_rest import password_reset
+            from {{cookiecutter.project_name}}.apps.utils.recovery_password_rest import password_reset
             return password_reset(request=request)
         except User.DoesNotExist:
             return Response(status=400, data=ErrorFactory.generate(ErrorType.email_not_found))

@@ -137,8 +137,8 @@ OAUTH2_PROVIDER = {
     # this is the list of available scopes
     'SCOPES': {'read': 'Read scope', 'write': 'Write scope', 'groups': 'Access to your groups'},
     'ACCESS_TOKEN_EXPIRE_SECONDS': 16070400,  # 180 dias, aproximadamente 6 meses
-    'OAUTH2_VALIDATOR_CLASS': "{{cookiecutter.app_name}}.apps.utils.oauth_extension.OAuthLibExtension",
-    'OAUTH2_BACKEND_CLASS': "{{cookiecutter.app_name}}.apps.utils.oauth_extension.OAuthLibCoreExtension",
+    'OAUTH2_VALIDATOR_CLASS': "{{cookiecutter.project_name}}.apps.utils.oauth_extension.OAuthLibExtension",
+    'OAUTH2_BACKEND_CLASS': "{{cookiecutter.project_name}}.apps.utils.oauth_extension.OAuthLibCoreExtension",
 }
 
 

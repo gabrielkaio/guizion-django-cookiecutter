@@ -1,7 +1,7 @@
 from django.utils.translation import gettext_lazy as _
 from rest_framework import serializers
 
-from {{cookiecutter.app_name}}.apps.accounts.models import User
+from {{cookiecutter.project_name}}.apps.accounts.models import User
 from rest_framework import validators
 
 

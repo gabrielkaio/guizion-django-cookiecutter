@@ -3,7 +3,7 @@ from rest_framework.parsers import FormParser, MultiPartParser
 from rest_framework.response import Response
 from rest_framework.views import APIView
 
-from {{cookiecutter.app_name}}.apps.upload.upload_photo import PhotoUpload
+from {{cookiecutter.project_name}}.apps.upload.upload_photo import PhotoUpload
 
 
 class PhotoUploadAPI(APIView):

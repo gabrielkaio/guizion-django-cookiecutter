@@ -1,6 +1,6 @@
 from rest_framework.routers import DefaultRouter
 
-from {{cookiecutter.app_name}}.apps.accounts.api import UserViewSet
+from {{cookiecutter.project_name}}.apps.accounts.api import UserViewSet
 
 
 router = DefaultRouter()
