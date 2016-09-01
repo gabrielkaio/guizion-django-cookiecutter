@@ -4,7 +4,7 @@ from rest_framework import permissions
 class IsCreationOrIsAuthenticated(permissions.BasePermission):
     def has_permission(self, request, view):
         if not request.user.is_authenticated():
-            if view.action == 'create':
+            if view.method == 'POST':
                 return True
             else:
                 return False
@@ -18,7 +18,7 @@ class NoPermissionNeeded(permissions.BasePermission):
 
 class IsAdminOrListNoPermissionNeeded(permissions.BasePermission):
     def has_permission(self, request, view):
-        if view.action == 'list':
+        if view.method == 'GET':
             return True
         else:
             return request.user.is_superuser
