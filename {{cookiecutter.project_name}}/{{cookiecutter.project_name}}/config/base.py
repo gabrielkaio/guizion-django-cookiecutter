@@ -42,7 +42,7 @@ INSTALLED_APPS = [
 ]
 
 LOCAL_APPS = [
-
+    '{{cookiecutter.project_name}}.apps.accounts'
 ]
 
 INSTALLED_APPS += LOCAL_APPS
