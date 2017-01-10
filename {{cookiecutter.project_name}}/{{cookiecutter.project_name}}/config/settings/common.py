@@ -10,11 +10,13 @@ For the full list of settings and their values, see
 https://docs.djangoproject.com/en/1.9/ref/settings/
 """
 
-import os
+import environ
 
-# Build paths inside the project like this: os.path.join(BASE_DIR, ...)
-BASE_DIR = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
+BASE_DIR = environ.Path(__file__) - 3  # ({{ cookiecutter.project_slug }}/config/settings/common.py - 3 = {{ cookiecutter.project_slug }}/)
+APPS_DIR = BASE_DIR.path('{{ cookiecutter.project_slug }}')
 
+env = environ.Env()
+env.read_env()
 
 # Quick-start development settings - unsuitable for production
 # See https://docs.djangoproject.com/en/1.9/howto/deployment/checklist/
@@ -66,7 +68,9 @@ ROOT_URLCONF = '{{cookiecutter.project_name}}.urls'
 TEMPLATES = [
     {
         'BACKEND': 'django.template.backends.django.DjangoTemplates',
-        'DIRS': [os.path.join(BASE_DIR, 'templates')]
+        'DIRS': [
+            str(APPS_DIR.path('templates')),
+        ]
         ,
         'APP_DIRS': True,
         'OPTIONS': {
