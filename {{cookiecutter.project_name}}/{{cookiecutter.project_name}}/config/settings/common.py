@@ -9,45 +9,41 @@ https://docs.djangoproject.com/en/1.9/topics/settings/
 For the full list of settings and their values, see
 https://docs.djangoproject.com/en/1.9/ref/settings/
 """
-
+import os
 import environ
 
-BASE_DIR = environ.Path(__file__) - 3  # ({{ cookiecutter.project_slug }}/config/settings/common.py - 3 = {{ cookiecutter.project_slug }}/)
+BASE_DIR = environ.Path(__file__) - 3
 APPS_DIR = BASE_DIR.path('{{ cookiecutter.project_slug }}')
 
 env = environ.Env()
 env.read_env()
 
-# Quick-start development settings - unsuitable for production
-# See https://docs.djangoproject.com/en/1.9/howto/deployment/checklist/
-
 # SECURITY WARNING: keep the secret key used in production secret!
 SECRET_KEY = 'xr$vhads4iz7xl(nj-=-8zgl3g#v)ow2b*o&nvrn+c-q7djmf+'
 
-
-
 ALLOWED_HOSTS = []
 
-
 # Application definition
-
-INSTALLED_APPS = [
+DJANGO_APPS = (
     'django.contrib.admin',
     'django.contrib.auth',
     'django.contrib.contenttypes',
     'django.contrib.sessions',
     'django.contrib.messages',
     'django.contrib.staticfiles',
+)
+
+THIRD_PARTY_APPS = (
     'rest_framework',
     'oauth2_provider',
     's3direct',
-]
+)
 
-LOCAL_APPS = [
+LOCAL_APPS = (
     '{{cookiecutter.project_name}}.apps.accounts'
-]
+)
 
-INSTALLED_APPS += LOCAL_APPS
+INSTALLED_APPS = DJANGO_APPS + THIRD_PARTY_APPS + LOCAL_APPS
 
 MIDDLEWARE_CLASSES = [
     'django.middleware.security.SecurityMiddleware',
@@ -87,8 +83,6 @@ TEMPLATES = [
 WSGI_APPLICATION = '{{cookiecutter.project_name}}.wsgi.application'
 
 # Password validation
-# https://docs.djangoproject.com/en/1.9/ref/settings/#auth-password-validators
-
 AUTH_PASSWORD_VALIDATORS = [
     {
         'NAME': 'django.contrib.auth.password_validation.UserAttributeSimilarityValidator',
@@ -104,10 +98,7 @@ AUTH_PASSWORD_VALIDATORS = [
     },
 ]
 
-
 # Internationalization
-# https://docs.djangoproject.com/en/1.9/topics/i18n/
-
 LANGUAGE_CODE = 'en-us'
 
 TIME_ZONE = 'UTC'
@@ -117,7 +108,6 @@ USE_I18N = True
 USE_L10N = True
 
 USE_TZ = True
-
 
 DEVICE_TOKEN_HEADER = "HTTP_DEVICE_TOKEN"
 DEVICE_AGENT_HEADER = "HTTP_DEVICE_AGENT"
@@ -133,8 +123,6 @@ CELERY_TIMEZONE = 'America/Sao_Paulo'
 CELERY_ENABLE_UTC = True
 
 # Static files (CSS, JavaScript, Images)
-# https://docs.djangoproject.com/en/1.9/howto/static-files/
-
 STATIC_URL = '/static/'
 
 OAUTH2_PROVIDER = {
@@ -157,7 +145,6 @@ S3DIRECT_DESTINATIONS = {
     'categories': (create_filename, lambda u: True, ['image/jpeg', 'image/png', 'image/gif']),
 }
 
-
 REST_FRAMEWORK = {
     'DEFAULT_AUTHENTICATION_CLASSES': (
         'oauth2_provider.ext.rest_framework.OAuth2Authentication',
@@ -170,6 +157,5 @@ REST_FRAMEWORK = {
     'DATETIME_FORMAT': '%Y-%m-%dT%H:%M:%S%z',
     'DEFAULT_PAGINATION_CLASS': 'rest_framework.pagination.LimitOffsetPagination'
 }
-
 
 AWS_STORAGE_BUCKET_NAME = '{{cookiecutter.s3_bucket_name}}'
