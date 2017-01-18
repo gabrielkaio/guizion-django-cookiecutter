@@ -11,7 +11,7 @@ from oauth2_provider.settings import oauth2_settings
 from django.conf import settings
 
 from {{cookiecutter.project_name}}.apps.accounts.models import Devices
-from {{cookiecutter.project_name}}.config.base import DEVICE_AGENT_HEADER, DEVICE_TOKEN_HEADER
+from {{cookiecutter.project_name}}.config.settings.common import DEVICE_AGENT_HEADER, DEVICE_TOKEN_HEADER
 
 
 class OAuthLibCoreExtension(OAuthLibCore):
