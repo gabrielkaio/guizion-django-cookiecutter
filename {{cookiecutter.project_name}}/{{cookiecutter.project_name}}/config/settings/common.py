@@ -5,7 +5,7 @@ import environ
 import os
 
 BASE_DIR = environ.Path(__file__) - 3
-APPS_DIR = BASE_DIR.path('{{ cookiecutter.project_slug }}')
+APPS_DIR = BASE_DIR.path('{{ cookiecutter.project_name }}')
 
 env = environ.Env()
 env.read_env()
