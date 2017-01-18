@@ -31,6 +31,7 @@ apipatterns = [
 urlpatterns = [
     url(r'^admin/', admin.site.urls),
     url(r'^api/', include(apipatterns)),
+    url(r'^s3direct/', include('s3direct.urls')),
 
     url(
         regex=r'^registration/password_reset/$',
