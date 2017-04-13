@@ -16,24 +16,24 @@ SECRET_KEY = 'xr$vhads4iz7xl(nj-=-8zgl3g#v)ow2b*o&nvrn+c-q7djmf+'
 ALLOWED_HOSTS = []
 
 # Application definition
-DJANGO_APPS = (
+DJANGO_APPS = [
     'django.contrib.admin',
     'django.contrib.auth',
     'django.contrib.contenttypes',
     'django.contrib.sessions',
     'django.contrib.messages',
     'django.contrib.staticfiles',
-)
+]
 
-THIRD_PARTY_APPS = (
+THIRD_PARTY_APPS = [
     'rest_framework',
     'oauth2_provider',
     's3direct',
-)
+]
 
-LOCAL_APPS = (
-    '{{cookiecutter.project_name}}.apps.accounts'
-)
+LOCAL_APPS = [
+    '{{cookiecutter.project_name}}.apps.accounts',
+]
 
 INSTALLED_APPS = DJANGO_APPS + THIRD_PARTY_APPS + LOCAL_APPS
 
