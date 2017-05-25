@@ -1,20 +1,28 @@
+"""
+OAuth2 protocol extension for save the device token in login action
+"""
 from datetime import timedelta
 
 import boto3
+
 from django.utils import timezone
 from django.utils.translation import ugettext_lazy as _
+from django.conf import settings
+
 from oauth2_provider.models import RefreshToken, AccessToken
 from oauth2_provider.oauth2_backends import OAuthLibCore
 from oauth2_provider.oauth2_validators import OAuth2Validator
 from oauth2_provider.settings import oauth2_settings
-
-from django.conf import settings
 
 from {{cookiecutter.project_name}}.apps.accounts.models import Devices
 from {{cookiecutter.project_name}}.config.settings.common import DEVICE_AGENT_HEADER, DEVICE_TOKEN_HEADER
 
 
 class OAuthLibCoreExtension(OAuthLibCore):
+    """
+    Verify if the user can login
+    """
+
     def create_token_response(self, request):
 
         if DEVICE_AGENT_HEADER in request.META:
@@ -24,13 +32,16 @@ class OAuthLibCoreExtension(OAuthLibCore):
                 if DEVICE_TOKEN_HEADER in request.META:
                     return super(OAuthLibCoreExtension, self).create_token_response(request)
 
-        uri, http_method, body, headers = self._extract_params(request)
+        uri, http_method, body, headers = self._extract_params(request)  # pylint: disable=W0612
         uri = headers.get("Location", None)
         message = _('You need to send a Device Token Header')
         return uri, {"Content-Type": "application/json"}, '{"error": "' + str(message) + '"}', 400
 
 
 class OAuthLibExtension(OAuth2Validator):
+    """
+    Generate and save the token, device and send it to SNS
+    """
     def save_bearer_token(self, token, request, *args, **kwargs):
 
         if request.refresh_token:
@@ -61,11 +72,23 @@ class OAuthLibExtension(OAuth2Validator):
             refresh_token.save()
 
             if DEVICE_TOKEN_HEADER in request.headers:
-                self.save_device(request=request, access_token=access_token, refresh_token=refresh_token)
+                self.save_device(request=request,
+                                 access_token=access_token,
+                                 refresh_token=refresh_token)
 
         token['expires_in'] = oauth2_settings.ACCESS_TOKEN_EXPIRE_SECONDS
 
     def save_device(self, request, access_token, refresh_token):
+        """
+        Create a new device instance.
+        Args:
+            request.
+            access_token.
+            refresh_token.
+
+        Returns:
+            new device instance.
+        """
         device = Devices.objects.filter(device_token=request.headers[DEVICE_TOKEN_HEADER]).first()
         if device is not None:
             to_delete = AccessToken.objects.get(pk=device.access_token.id)
@@ -83,23 +106,28 @@ class OAuthLibExtension(OAuth2Validator):
                              refresh_token=refresh_token,
                              language=request.headers['HTTP_ACCEPT_LANGUAGE'])
 
-            operational_system = device.ANDROID if application_arn == settings.ANDROID_ARN else device.iOS
+            operational_system = device.ANDROID \
+                if application_arn == settings.ANDROID_ARN \
+                else device.iOS
+
             device.operational_system = operational_system
             awsclient = boto3.client('sns')
 
             response = awsclient.create_platform_endpoint(
-               PlatformApplicationArn=application_arn,
-               Token=device.device_token,
+                PlatformApplicationArn=application_arn,
+                Token=device.device_token,
             )
 
             device.arn = response['EndpointArn']
             return device.save()
 
     def get_application_arn(self, request):
+        """
+        return application arn
+        """
         if "ANDROID" in request.headers[DEVICE_AGENT_HEADER].upper():
             return settings.ANDROID_ARN
-        else:
-            if "SANDBOX" in request.headers[DEVICE_AGENT_HEADER].upper():
-                return settings.IOS_SANDBOX_ARN
-            else:
-                return settings.IOS_ARN
+        if "SANDBOX" in request.headers[DEVICE_AGENT_HEADER].upper():
+            return settings.IOS_SANDBOX_ARN
+
+        return settings.IOS_ARN

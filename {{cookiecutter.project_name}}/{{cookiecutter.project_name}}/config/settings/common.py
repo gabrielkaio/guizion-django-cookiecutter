@@ -106,7 +106,7 @@ DEVICE_AGENT_HEADER = "HTTP_DEVICE_AGENT"
 DEVICE_LANGUAGE_HEADER = "HTTP_DEVICE_LANGUAGE"
 
 # Celery Conf
-BROKER_URL = '{{cookiecutter.celery_broker_url}}'
+BROKER_URL = 'amqp://{{cookiecutter.rabbitmq_user}}:{{cookiecutter.rabbitmq_password}}@localhost:5672/{{cookiecutter.rabbitmq_app}}'
 
 CELERY_TASK_SERIALIZER = 'json'
 CELERY_RESULT_SERIALIZER = 'json'

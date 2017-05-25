@@ -1,4 +1,6 @@
-import warnings
+"""
+Rewrite the recovery password rules for work with a Rest View
+"""
 
 from django.contrib.auth import get_user_model
 from django.contrib.auth.forms import PasswordResetForm
@@ -9,7 +11,7 @@ from rest_framework.response import Response
 
 class CustomResetPasswordForm(PasswordResetForm):
     def get_users(self, email):
-        return get_user_model()._default_manager.filter(
+        return get_user_model()._default_manager.filter(  # pylint: disable=W0212
             email__iexact=email, is_active=True)
 
 
@@ -22,6 +24,26 @@ def password_reset(request, is_admin_site=False,
                    extra_context=None,
                    html_email_template_name='registration/password_reset_email.html',
                    extra_email_context=None):
+
+    """
+    Function with the new password_reset logic
+
+    Args:
+        request:
+        is_admin_site:
+        email_template_name:
+        subject_template_name:
+        password_reset_form:
+        token_generator:
+        from_email:
+        extra_context:
+        html_email_template_name:
+        extra_email_context:
+
+    Returns:
+        {'status': 'ok'}
+    """
+
     if request.method == "POST":
         form = password_reset_form(request.data)
         if form.is_valid():
@@ -47,4 +69,4 @@ def password_reset(request, is_admin_site=False,
     }
     if extra_context is not None:
         context.update(extra_context)
-    return Response(status=200, data={'status': 'OK'})
+    return Response(status=200, data={'status': 'ok'})

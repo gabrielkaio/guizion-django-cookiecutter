@@ -1,3 +1,7 @@
+"""
+    Module to define the types of files
+     for receive in upload request
+"""
 from enum import Enum
 
 
@@ -7,13 +11,10 @@ class PhotoDirectory(Enum):
 
 class PhotoDirectoryFactory:
 
-    avatar = 'avatar'
-    
     @staticmethod
-    def factory(type):
-
+    def factory(file_type):
         status = dict(
             user_avatar=PhotoDirectory.user_avatar,
         )
 
-        return status[type]
+        return status[file_type]

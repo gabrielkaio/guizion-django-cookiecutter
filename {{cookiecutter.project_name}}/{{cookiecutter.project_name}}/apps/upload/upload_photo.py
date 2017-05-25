@@ -1,39 +1,32 @@
-import uuid
+"""
+Photo upload API View
+"""
+from rest_framework import permissions
+from rest_framework.parsers import FormParser, MultiPartParser
+from rest_framework.response import Response
+from rest_framework.views import APIView
 
-import boto3
-from django.conf import settings
-
-from {{cookiecutter.project_name}}.apps.upload.types import PhotoDirectoryFactory
+from {{cookiecutter.project_name}}.apps.upload.upload_photo import PhotoUpload
 
 
-class PhotoUpload:
-    def __init__(self):
-        self.bucket_name = settings.AWS_STORAGE_BUCKET_NAME
+class PhotoUploadAPI(APIView):
+    """
+    View to receive the file
+    """
+    permission_classes = (permissions.AllowAny,)
+    parser_classes = (FormParser, MultiPartParser)
 
-    @staticmethod
-    def __request_file_name__():
-        file_name = '%s.jpg' % uuid.uuid4()
-        filedir = '/tmp/%s.jpg' % file_name
-        return {'file_name': file_name, 'file_dir': filedir}
+    def post(self, request):
+        """
+        Receive the file and send it to AWS S3
+        Args:
+            request:
 
-    def __get_url__(self, key):
-        return 'https://s3.amazonaws.com/{bucket}/{key}'.format(bucket=self.bucket_name, key=key)
-
-    @staticmethod
-    def __get_key__(img_type, file_name):
-        return "{0}{1}".format(PhotoDirectoryFactory.factory(img_type).value, file_name)
-
-    def __save_file__(self, file):
-        file_name = self.__request_file_name__()
-        with open(file_name['file_dir'], 'wb+') as temp_file:
-            for chunk in file.chunks():
-                temp_file.write(chunk)
-        return file_name
-
-    def do_upload(self, file, type):
-        file_name = self.__save_file__(file)
-
-        key = self.__get_key__(type, file_name['file_name'])
-        s3 = boto3.resource('s3')
-        s3.Bucket(self.bucket_name).upload_file(file_name['file_dir'], key)
-        return self.__get_url__(key)
+        Returns:
+            {'url': 'the public url in s3'}
+        """
+        file_upload = PhotoUpload()
+        file = request.FILES['file']
+        return Response(status=200, data={
+            'url': file_upload.do_request_upload(file, request.GET['type'])
+        })

@@ -1,3 +1,7 @@
+"""
+Module for define the Rest pagination rules
+"""
+
 from rest_framework.pagination import PageNumberPagination
 
 
