@@ -13,7 +13,7 @@ def update_the_docs():
     """
     local('sphinx-apidoc --full -o docs esmafe '
           '-V {version} -R {version} '
-          '-H Esmafe -A Guizion Labs '
+          '-H {{cookiecutter.project_name}} -A Guizion Labs '
           '--separate'.format(version=DOC_VERSION))
     local('make html -C docs/')
 
@@ -22,4 +22,4 @@ def check_pylint():
     """
     Alias to check pylint
     """
-    local('pylint esmafe')
+    local('pylint {{cookiecutter.project_name}}')
