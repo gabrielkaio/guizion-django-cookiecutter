@@ -1,32 +1,43 @@
 """
-Photo upload API View
+    Module for with receive the file and send it
+    to AWS s3
 """
-from rest_framework import permissions
-from rest_framework.parsers import FormParser, MultiPartParser
-from rest_framework.response import Response
-from rest_framework.views import APIView
+import uuid
 
-from {{cookiecutter.project_name}}.apps.upload.upload_photo import PhotoUpload
+import boto3
+from django.conf import settings
+
+from {{cookiecutter.project_name}}.apps.upload.types import PhotoDirectoryFactory
 
 
-class PhotoUploadAPI(APIView):
+class PhotoUpload:
     """
-    View to receive the file
+    Class for upload file to S3
     """
-    permission_classes = (permissions.AllowAny,)
-    parser_classes = (FormParser, MultiPartParser)
+    def __init__(self):
+        self.bucket_name = settings.AWS_STORAGE_BUCKET_NAME
 
-    def post(self, request):
-        """
-        Receive the file and send it to AWS S3
-        Args:
-            request:
+    @staticmethod
+    def __request_file_name__():
+        file_name = '%s.png' % uuid.uuid4()
+        filedir = '/tmp/%s.png' % file_name
+        return {'file_name': file_name, 'file_dir': filedir}
 
-        Returns:
-            {'url': 'the public url in s3'}
-        """
-        file_upload = PhotoUpload()
-        file = request.FILES['file']
-        return Response(status=200, data={
-            'url': file_upload.do_request_upload(file, request.GET['type'])
-        })
+    def get_url(self, key):
+        return 'https://s3.amazonaws.com/{bucket}/{key}'.format(bucket=self.bucket_name, key=key)
+
+    @staticmethod
+    def get_key(img_type, file_name):
+        return "{0}{1}".format(PhotoDirectoryFactory.factory(img_type).value, file_name)
+
+    def do_request_upload(self, file, key):
+        s3 = boto3.client('s3')
+        s3.put_object(Bucket=self.bucket_name, Key=key, Body=file)
+        return self.get_url(key)
+
+    def do_local_upload(self, file_dir, file_type):
+        file_name = self.__request_file_name__()
+        key = self.get_key(file_type, file_name['file_name'])
+        s3 = boto3.resource('s3')
+        s3.Bucket(self.bucket_name).upload_file(file_dir, key)
+        return self.get_url(key)
