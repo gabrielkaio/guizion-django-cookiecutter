@@ -1,8 +1,8 @@
 #!/usr/bin/env bash
 
 export VIRTUALENV_NAME="{{cookiecutter.virtual_env_name}}";
-export GIT_LINK "git@bitbucket.com:guizion/{{git_project_name}}.git";
-export GIT_PROJECT_NAME "{{git_project_name}}";
+export GIT_LINK "git@bitbucket.com:guizion/{{cookiecutter.git_project_name}}.git";
+export GIT_PROJECT_NAME "{{cookiecutter.git_project_name}}";
 
 export RABBITMQ_USER "{{cookiecutter.rabbitmq_user}}";
 export RABBITMQ_PASSWORD "{{cookiecutter.rabbitmq_password}}";
