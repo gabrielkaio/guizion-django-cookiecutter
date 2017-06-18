@@ -1,11 +1,17 @@
 """
 Photo upload API View
 """
+
+import base64
+
+from uuid import uuid4
+
 from rest_framework import permissions
 from rest_framework.parsers import FormParser, MultiPartParser
 from rest_framework.response import Response
 from rest_framework.views import APIView
 
+from {{cookiecutter.project_name}}.apps.upload.tasks import upload_in_background
 from {{cookiecutter.project_name}}.apps.upload.upload_photo import PhotoUpload
 
 
@@ -26,7 +32,12 @@ class PhotoUploadAPI(APIView):
             {'url': 'the public url in s3'}
         """
         file_upload = PhotoUpload()
-        file = request.FILES['file']
-        return Response(status=200, data={
-            'url': file_upload.do_request_upload(file, request.GET['type'])
-        })
+
+        key = file_upload.get_key(request.GET['type'],
+                                  '{file_name}.png'.format(file_name=uuid4().__str__()))
+
+        file = base64.b64encode(request.FILES['file'].read()).decode('utf-8')
+
+        upload_in_background.delay(file, key)
+
+        return Response(status=200, data={'url': file_upload.get_url(key)})
