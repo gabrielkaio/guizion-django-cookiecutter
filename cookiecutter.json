@@ -3,23 +3,16 @@
 	"local_database_name": "database",
 	"local_database_user": "database_user",
 	"local_database_password": "database_password",
-
 	"production_database_name": "database",
 	"production_database_user": "database_user",
 	"production_database_password": "database_password",
-
 	"staging_database_name": "database",
 	"staging_database_user": "database_user",
 	"staging_database_password": "database_password",
-
 	"s3_bucket_name": "s3_bucket",
-
 	"virtual_env_name": "guizion",
-	
 	"rabbitmq_user": "guizion",
 	"rabbitmq_password": "guizion",
 	"rabbitmq_app": "guizion",
-
-
-	"git_project_name": "guizion-ws",
+	"git_project_name": "guizion-ws"
 }
