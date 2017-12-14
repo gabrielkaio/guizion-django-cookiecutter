@@ -2,7 +2,7 @@ import base64
 
 from celery.task import task
 
-from judzi_ws.apps.upload.upload_photo import PhotoUpload
+from {{cookiecutter.project_name}}.apps.upload.upload_photo import PhotoUpload
 
 
 @task()
