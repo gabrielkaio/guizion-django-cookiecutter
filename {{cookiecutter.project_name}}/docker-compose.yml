@@ -1,0 +1,38 @@
+version: '2'
+
+volumes:
+  postgres_data: {}
+  rabbitmq_data: {}
+
+services:
+  nginx:
+    build:
+      context: ./compose/nginx
+      dockerfile: Dockerfile
+    ports:
+      - "80:80"
+    volumes:
+      - ./compose/nginx/new-judzi-web:/usr/share/nginx/html:ro
+  postgres:
+    build:
+      dockerfile: ./compose/postgres/Dockerfile
+      context: .
+    volumes:
+    - postgres_data:/var/lib/postgresql/data
+    env_file:
+    - .env
+  django:
+    build:
+      dockerfile: ./compose/django/Dockerfile
+      context: .
+    command: bash -c "chmod +x ./compose/scripts/wait_for_it.sh && ./compose/scripts/wait_for_it.sh postgres:5432 && python /app/manage.py runserver 0.0.0.0:8000"
+    ports:
+    - "8000:8000"
+    links:
+    - postgres
+    env_file:
+    - .env
+    depends_on:
+    - postgres
+    volumes:
+    - ./:/app

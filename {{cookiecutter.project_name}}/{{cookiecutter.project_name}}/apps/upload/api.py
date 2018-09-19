@@ -36,8 +36,8 @@ class PhotoUploadAPI(APIView):
         key = file_upload.get_key(request.GET['type'],
                                   '{file_name}.png'.format(file_name=uuid4().__str__()))
 
-        file = base64.b64encode(request.FILES['file'].read()).decode('utf-8')
+        file = request.FILES['file']
 
-        upload_in_background.delay(file, key)
+        file_upload.do_request_upload(file, key)
 
         return Response(status=200, data={'url': file_upload.get_url(key)})

@@ -33,6 +33,7 @@ THIRD_PARTY_APPS = [
 
 LOCAL_APPS = [
     '{{cookiecutter.project_name}}.apps.accounts',
+    '{{cookiecutter.project_name}}.apps.upload'
 ]
 
 INSTALLED_APPS = DJANGO_APPS + THIRD_PARTY_APPS + LOCAL_APPS

@@ -1,22 +1,20 @@
 # {{cookiecutter.project_name}} Back-end implementation
 
 ## Guide for installation in Ubuntu 16
-### Local
-Run:
+### Commands:
+RUN:
 ``` bash
-source ./{{cookiecutter.project_name}}/config/server/install_server_local.sh
+docker-compose up -d
 ```
 
-### Staging
-Run:
+Make Migrations:
 ``` bash
-source ./{{cookiecutter.project_name}}/config/server/install_server_staging.sh
+docker-compose run --rm django python ./manage.py makemigrations
 ```
 
-### Production
-Run:
+Migrate:
 ``` bash
-source ./{{cookiecutter.project_name}}/config/server/install_server_production.sh
+docker-compose run --rm django python ./manage.py migrate
 ```
 
 ## Server Specifications
